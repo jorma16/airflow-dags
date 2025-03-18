@@ -1,5 +1,6 @@
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
+from airflow.operators.bash import BashOperator
 from airflow.utils.dates import days_ago
 
 default_args = {"owner": "airflow", "start_date": days_ago(1)}
@@ -10,15 +11,20 @@ with DAG(
     schedule_interval="* * * * *",
     catchup=False,
 ) as dag:
-    hello_world = KubernetesPodOperator(
+    kubernetes_task = KubernetesPodOperator(
         namespace="airflow",
         image="python:3.11-slim",
         cmds=["python", "-c"],
         arguments=["print('Hello World')"],
         labels={"foo": "bar"},
         name="hello_world",
-        task_id="hello_world_task",
+        task_id="kubernetes_task",
         get_logs=True,
     )
 
-    hello_world
+    bash_task = BashOperator(
+        task_id="bash_task",
+        bash_command="echo hello",
+    )
+
+    kubernetes_task >> bash_task
