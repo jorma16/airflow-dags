@@ -28,8 +28,6 @@ with DAG(
         bash_command="echo hello",
     )
 
-    http_task = SimpleHttpOperator(
-        task_id="http_task", method="GET", endpoint="https://pulse.internal.avantio.dev"
-    )
+    http_task = SimpleHttpOperator(task_id="http_task", method="GET", endpoint="/")
 
     kubernetes_task >> (bash_task, http_task)
