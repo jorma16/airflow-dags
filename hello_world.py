@@ -1,6 +1,7 @@
 from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
 from airflow.operators.bash import BashOperator
+from airflow.providers.http.operators.http import SimpleHttpOperator
 from airflow.utils.dates import days_ago
 
 default_args = {"owner": "airflow", "start_date": days_ago(1)}
@@ -27,4 +28,8 @@ with DAG(
         bash_command="echo hello",
     )
 
-    kubernetes_task >> bash_task
+    http_task = SimpleHttpOperator(
+        task_id="http_task", method="GET", endpoint="https://pulse.internal.avantio.dev"
+    )
+
+    kubernetes_task >> bash_task, http_task
