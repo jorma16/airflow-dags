@@ -7,7 +7,7 @@ default_args = {"ownser": "airflow", "start_date": days_ago(1)}
 with DAG(
     dag_id="hello_world_kubernetes",
     default_args=default_args,
-    schedule_interval=None,
+    schedule_interval="@once",  # "* * * * *"
     catchup=False,
 ) as dag:
     hello_world = KubernetesPodOperator(
