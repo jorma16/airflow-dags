@@ -2,12 +2,12 @@ from airflow import DAG
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
 from airflow.utils.dates import days_ago
 
-default_args = {"ownser": "airflow", "start_date": days_ago(1)}
+default_args = {"owner": "airflow", "start_date": days_ago(1)}
 
 with DAG(
     dag_id="hello_world_kubernetes",
     default_args=default_args,
-    schedule_interval="@once",  # "* * * * *"
+    schedule_interval="* * * * *",
     catchup=False,
 ) as dag:
     hello_world = KubernetesPodOperator(
