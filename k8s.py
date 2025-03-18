@@ -28,7 +28,7 @@ first_task = DummyOperator(task_id="first-task", dag=dag)
 # Create the tasks using images from dockerhub
 # Create a kubernetes pod using a python image
 python_task = KubernetesPodOperator(
-    namespace="default",
+    namespace="airflow",
     image="python:3.6",
     cmds=["python", "-c"],
     arguments=["print('[PYTHON TASK] Hello world!')"],
@@ -41,7 +41,7 @@ python_task = KubernetesPodOperator(
 
 # Create a kubernetes pod using an ubuntu image
 bash_task = KubernetesPodOperator(
-    namespace="default",
+    namespace="airflow",
     image="ubuntu:16.04",
     cmds=["echo"],
     arguments=["[BASH TASK] Hi world!"],
@@ -54,7 +54,7 @@ bash_task = KubernetesPodOperator(
 
 # Create a kubernetes pod using a nodejs image
 node_task = KubernetesPodOperator(
-    namespace="default",
+    namespace="airflow",
     image="owncloudci/nodejs",
     cmds=["node", "-e"],
     arguments=["console.log('[NODEJS TASK] Hey world!')"],
