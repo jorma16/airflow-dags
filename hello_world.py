@@ -32,4 +32,4 @@ with DAG(
         task_id="http_task", method="GET", endpoint="https://pulse.internal.avantio.dev"
     )
 
-    kubernetes_task >> bash_task, http_task
+    kubernetes_task >> (bash_task, http_task)
